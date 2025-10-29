@@ -38,15 +38,15 @@ services:
     ports:
       - "4000:4000"
 
-  nginx:
+  frontend:
     build:
-      context: ./nginx
-      dockerfile: Dockerfile
-    container_name: blog_nginx
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: blog_frontend
+    ports:
+      - "3000:80"
     depends_on:
       - api
-    ports:
-      - "80:80"
 
 volumes:
   db_data:

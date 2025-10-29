@@ -1,15 +1,11 @@
-# Build frontend
 FROM node:18-alpine AS build-frontend
 WORKDIR /frontend
-COPY ../frontend/package.json ../frontend/package-lock.json* ./
+COPY package.json package-lock.json* ./
 RUN npm ci || npm install
-COPY ../frontend .
+COPY . .
 RUN npm run build
 
-# Serve with nginx
 FROM nginx:alpine
-COPY --from=build-frontend /frontend/dist /usr/share/nginx/html
+COPY --from=build-frontend /frontend/build /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
-
-
